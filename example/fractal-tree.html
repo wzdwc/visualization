@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <canvas id="canvas" width ='1000' height="1000"></canvas>
+ <script>
+     const dom = document.getElementById('canvas')
+     const ctx = dom.getContext('2d')
+     const length = 120  // 树枝长度
+     const stemWide = 8
+     const angle = Math.PI / 6
+     const startPoint = {
+       x: 500,
+       y: 0
+     }
+     ctx.translate(0, dom.height)
+     ctx.scale(1,-1)
+     ctx.lineCap = "round"
+
+     class Vector {
+       constructor (x,y) {
+         this.length = 1
+         this.angle = 0
+         this.origin = {
+           x: x,
+           y: y
+         }
+         this.x = 0
+         this.y = 0
+         this.init(x, y)
+       }
+       init() {
+         this.setPoint()
+       }
+       setPoint() {
+         this.x = this.origin.x + Math.sin(this.angle) * this.length
+         this.y = this.origin.y + Math.cos(this.angle) * this.length
+       }
+       scale(length = 0) {
+         this.length += length
+         this.setPoint()
+         return this
+       }
+       translate(x = 0, y = 0) {
+         this.origin.x += x
+         this.origin.y += y
+         return this
+       }
+       rotate(angle = 0) {
+         this.angle = angle
+         this.setPoint()
+         return this
+       }
+     }
+
+     function drawBranch (ctx, point, wide, length, angle) {
+       const v = new Vector(point.x, point.y).scale(length).rotate(angle)
+       ctx.beginPath()
+       ctx.moveTo(point.x, point.y)
+       ctx.lineTo(v.x, v.y)
+       ctx.lineWidth = wide
+       ctx.stroke()
+       return v
+     }
+
+     function drawLeaf (point, size, angle) {
+       const entPoint = new Vector(point.x, point.y).scale(size).rotate(Math.PI / 2 + angle)
+       const vS1 = new Vector(point.x, point.y).scale(size / 2).rotate(Math.PI / 2 + angle)
+       const vE1= new Vector(entPoint.x, entPoint.y).scale(size / 2).rotate(Math.PI + Math.PI / 3 + angle)
+       const vE2 = new Vector(point.x, point.y).scale(size / 2).rotate(Math.PI / 2 + angle)
+       const vS2= new Vector(entPoint.x, entPoint.y).scale(size / 2).rotate(-Math.PI / 3 + angle)
+       ctx.beginPath()
+       ctx.moveTo(point.x,point.y)
+       ctx.bezierCurveTo(vS1.x, vS1.y, vE1.x, vE1.y, entPoint.x, entPoint.y)
+       ctx.bezierCurveTo(vS2.x, vS2.y, vE2.x, vE2.y, point.x, point.y)
+       ctx.fillStyle = '#167403'
+       ctx.fill()
+     }
+
+     function drawFruit (point, size) {
+       ctx.beginPath()
+       ctx.arc(point.x, point.y, size, 0, Math.PI * 2, false)
+       ctx.fillStyle = '#ff0000'
+       ctx.fill()
+     }
+
+     function fractalTree(ctx, point, wide, length, angle) {
+       if (wide < 1) {
+         for(let i = 0; i< 4; i++) {
+           drawLeaf(point, 10 + 30 * Math.random(), Math.PI * 2 / 360 * Math.random() * 360)
+         }
+         const fruitSize = Math.random() * 10
+         if (fruitSize > 3 && fruitSize < 7) {
+           drawFruit(point, fruitSize)
+         }
+         return
+       }
+       const lAngle = -Math.PI / 6 + angle
+       const rAngle = Math.PI / 6 + angle
+       const v = drawBranch(ctx, point, wide, length, lAngle)
+       wide--
+       fractalTree(ctx, v, wide, length * 0.8, lAngle)
+       fractalTree(ctx, v, wide, length * 0.8, rAngle)
+     }
+
+     fractalTree(ctx, startPoint, stemWide, length, angle)
+     // drawLeaf(500,500,200, Math.PI / 3)
+ </script>
+</body>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    #canvas{
+        width: 1000px;
+        height: 1000px;
+    }
+</style>
+</html>

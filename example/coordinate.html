@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="coordinate" width="1000" height = "1000"></canvas>
+</body>
+<script>
+    const dom = document.getElementById('coordinate')
+    const ctx = dom.getContext('2d')
+    const width = dom.width / 2
+    const height = dom.height / 2
+    const offset = 250
+    let isWaite = false
+    // 棋盘
+    function coordinate(ctx) {
+      // 棋盘背景
+      ctx.beginPath()
+      ctx.translate(offset + .5,offset + .5)
+      ctx.fillStyle = 'rgba(196,176,140,0.3)'
+      ctx.fillRect(-20, -20, width + 40, height + 40)
+      ctx.stroke()
+
+      // 棋盘边线
+      ctx.beginPath()
+      ctx.translate(0.5,0.5)
+      ctx.fillStyle = '#000'
+      ctx.lineWidth = 1
+      ctx.strokeRect(0, 0, width, height)
+      ctx.stroke()
+      ctx.lineWidth = 3
+      ctx.strokeRect(-5, -5, width + 10, height + 10)
+      ctx.stroke()
+      // 棋盘内部线条
+      ctx.strokeStyle = 'rgba(0,0,0,0.2)'
+      ctx.lineWidth = 1
+      for (let i = 1; i < 18; i++) {
+        ctx.beginPath()
+        ctx.scale(1, 1)
+        ctx.moveTo(0, height / 18 * i)
+        ctx.lineTo(height, height / 18 * i)
+        ctx.moveTo(height / 18 * i, 0)
+        ctx.lineTo(height / 18 * i, height)
+        ctx.stroke()
+      }
+      // 棋盘星
+      for(let i = 1; i <= 5; i+=2) {
+        for(let j = 1; j <= 5; j+=2) {
+          drawArc(ctx, '#000', { x: height / 18 * 3 * i, y: height / 18 * 3 * j })
+        }
+      }
+      ctx.save()
+    }
+    // 画圆
+    function drawArc(ctx, color, point, radius = 4) {
+      ctx.beginPath()
+      ctx.fillStyle = color
+      ctx.arc(point.x, point.y, radius, 0, Math.PI * 2, true)
+      ctx.fill()
+    }
+
+    function addEvent() {
+      dom.addEventListener('click', (e) => {
+        const maxLimit = offset + 500
+        const color = isWaite ? '#fff' : '#000'
+        if (e.pageX > offset && e.pageY > offset && e.pageX < maxLimit && e.pageY < maxLimit) {
+          console.log('point', { x:e.pageX, y:e.pageY })
+          const point = {
+            x: Math.round((e.pageX - offset) / (width / 18)) * height / 18,
+            y: Math.round((e.pageY - offset) / (width / 18)) * height / 18
+          }
+          drawArc(ctx, color, point, 10)
+          isWaite = !isWaite
+        }
+      })
+    }
+    addEvent()
+    coordinate(ctx)
+    ctx.beginPath()
+    const point = {
+      x: 50,
+      y: 50
+    }
+    const lingrad = ctx.createLinearGradient(1.6 * point.x, 0.36 * point.y, 0, point.y)
+    lingrad.addColorStop(0, '#fff')
+    lingrad.addColorStop(1, '#959595')
+    ctx.fillStyle = lingrad
+    ctx.arc(point.x, point.y, 50, 0, Math.PI * 2, true)
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 4;
+    ctx.shadowBlur = 6;
+    ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+    ctx.fill()
+</script>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    canvas#coordinate{
+        width: 1000px;
+        height: 1000px;
+    }
+</style>
+</html>

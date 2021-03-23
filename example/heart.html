@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="heart">
+    <div class="c-r"></div>
+    <div class="c-l"></div>
+    <div class="h-b"></div>
+</div>
+<div class="test">❤</div>
+<div class="love"></div>
+</body>
+<style>
+    .heart{
+        width: 100px;
+        height: 100px;
+        position: relative;
+    }
+    .c-l{
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        left: 0;
+        border-radius: 50%;
+        background-color: #ff0000;
+    }
+    .c-r{
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        right: 0;
+        border-radius: 50%;
+        background-color: #ff0000;
+    }
+    .h-b{
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        transform: rotate(45deg);
+        background-color: #ff0000;
+    }
+    .test{
+        color: #ff0000;
+        font-size: 110px;
+    }
+    .love {
+        /* 爱心 */
+        position: relative;
+    }
+    .love:before {
+        content: "";
+        width: 70px;
+        height: 110px;
+        background: #f00;
+        position: absolute;
+        border-top-left-radius: 50%;
+        border-top-right-radius: 50%;
+        transform: rotate(45deg);
+    }
+    .love:after {
+        content: "";
+        width: 70px;
+        height: 110px;
+        background: #f00;
+        position: absolute;
+        border-top-left-radius: 50%;
+        border-top-right-radius: 50%;
+        transform: rotate(-45deg);
+        left: -30px;
+    }
+</style>
+</html>

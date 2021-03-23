@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="diamond-container">
+    <div class="diamond-list">
+        <i></i>
+        <i></i>
+    </div>
+</div>
+<div class="test">
+    ♦
+</div>
+</body>
+<style>
+    .diamond-container{
+        width: 100px;
+        height: 100px;
+        position: relative;
+    }
+    .diamond-list {
+        position: absolute;
+        left: 25px;
+        top: -14px;
+    }
+    .diamond-container i{
+        display: block;
+        width: 0;
+    }
+    .diamond-container i:nth-child(2){
+        border-right: 25px solid transparent;
+        border-top: 40px solid #ff0000;
+        border-left: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+    }
+    .diamond-container i:nth-child(1){
+        border-right: 25px solid transparent;
+        border-bottom: 40px solid #ff0000;
+        border-top: 25px solid transparent;
+        border-left: 25px solid transparent;
+    }
+    .test{
+        color: #ff0000;
+        font-size: 110px;
+    }
+</style>
+</html>
