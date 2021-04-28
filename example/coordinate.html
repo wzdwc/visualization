@@ -7,6 +7,7 @@
 <body>
 <canvas id="coordinate" width="1000" height = "1000"></canvas>
 </body>
+<script src="../lib/Vector.js"></script>
 <script>
     const dom = document.getElementById('coordinate')
     const ctx = dom.getContext('2d')
@@ -60,39 +61,45 @@
       ctx.arc(point.x, point.y, radius, 0, Math.PI * 2, true)
       ctx.fill()
     }
-
-    function addEvent() {
+    // 事件添加
+    function addEvent(ctx) {
       dom.addEventListener('click', (e) => {
         const maxLimit = offset + 500
         const color = isWaite ? '#fff' : '#000'
         if (e.pageX > offset && e.pageY > offset && e.pageX < maxLimit && e.pageY < maxLimit) {
-          console.log('point', { x:e.pageX, y:e.pageY })
           const point = {
             x: Math.round((e.pageX - offset) / (width / 18)) * height / 18,
             y: Math.round((e.pageY - offset) / (width / 18)) * height / 18
           }
-          drawArc(ctx, color, point, 10)
+          drawChessmen(ctx, color, 10, point)
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 2;
+          ctx.shadowBlur = 2;
+          ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+          ctx.fill()
           isWaite = !isWaite
         }
       })
     }
-    addEvent()
+    addEvent(ctx)
     coordinate(ctx)
-    ctx.beginPath()
-    const point = {
-      x: 50,
-      y: 50
+    drawChessmen(ctx, '#fff', 10)
+    function drawChessmen (ctx, color, size, point = { x: 10, y: 10 }) {
+      ctx.beginPath()
+      const v = new Vector(point.x, point.y).rotate(Math.PI  * 0.25).scale(10)
+      const v2 = new Vector(point.x, point.y).rotate(Math.PI  * 1.25).scale(10)
+      const linear = ctx.createLinearGradient(v.x, v.y, v2.x, v2.y)
+      linear.addColorStop(0, color)
+      linear.addColorStop(1, '#b3b2b2')
+      ctx.fillStyle = linear
+      ctx.arc(point.x, point.y, size, 0, Math.PI * 2, true)
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 4;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+      ctx.fill()
     }
-    const lingrad = ctx.createLinearGradient(1.6 * point.x, 0.36 * point.y, 0, point.y)
-    lingrad.addColorStop(0, '#fff')
-    lingrad.addColorStop(1, '#959595')
-    ctx.fillStyle = lingrad
-    ctx.arc(point.x, point.y, 50, 0, Math.PI * 2, true)
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 4;
-    ctx.shadowBlur = 6;
-    ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-    ctx.fill()
+
 </script>
 <style>
     *{

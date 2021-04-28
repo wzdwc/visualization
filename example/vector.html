@@ -6,44 +6,33 @@
 </head>
 <body>
 <canvas id="canvas" width = '500' height="500"></canvas>
+<script src="../lib/Vector.js"></script>
 <script>
-    const dom = document.getElementById('canvas')
-    const ctx = dom.getContext('2d')
-    class Vector {
-      constructor (x,y) {
-        this.length = 1
-        this.angle = 0
-        this.origin = {
-          x: x,
-          y: y
+    function init() {
+      const dom = document.getElementById('canvas')
+      const ctx = dom.getContext('2d')
+      ctx.translate(0.5,0.5)
+      ctx.translate(0, 500)
+      ctx.scale(1, -1)
+      let point = {
+        x: 250,
+        y: 250
+      }
+      drawArc(ctx, point, false)
+      let i = 1
+      let v = {}
+      const step = () => {
+        if (i <= 8) {
+          v = new Vector(point.x, point.y).rotate(-Math.PI  * 2 / 18 * i).scale(100 / i)
+          draw(ctx, v, point)
+          point = v
+          i++
+          step()
         }
-        this.x = 0
-        this.y = 0
-        this.init(x, y)
       }
-      init() {
-        this.setPoint()
-      }
-      setPoint() {
-        this.x = this.origin.x + Math.sin(this.angle) * this.length
-        this.y = this.origin.y + Math.cos(this.angle) * this.length
-      }
-      scale(length = 0) {
-        this.length += length
-        this.setPoint()
-        return this
-      }
-      translate(x = 0, y = 0) {
-        this.origin.x += x
-        this.origin.y += y
-        return this
-      }
-      rotate(angle = 0) {
-        this.angle = angle
-        this.setPoint()
-        return this
-      }
+      step()
     }
+    init()
     function draw(ctx, v, point) {
       console.log(v)
       ctx.beginPath()
@@ -63,52 +52,6 @@
         ctx.stroke()
       }
     }
-    ctx.translate(0.5,0.5)
-    ctx.translate(0, 500)
-    ctx.scale(1, -1)
-    let point = {
-      x: 250,
-      y: 250
-    }
-    drawArc(ctx, point, false)
-    let i = 1
-    let v = {}
-    const step = () => {
-      if (i <= 8) {
-        v = new Vector(point.x, point.y).rotate(-Math.PI  * 2 / 18 * i).scale(100 / i)
-        draw(ctx, v, point)
-        point = v
-        i++
-        step()
-        // requestAnimationFrame(step)
-      }
-    }
-    step()
-    // requestAnimationFrame(step)
-    // for(let i = 1; i<= 10; i++) {
-    //
-    //   // point = v
-    // }
-    // let v = new Vector(point.x, point.y).translate(10,0).rotate(1).scale(100)
-    // draw(ctx, v, point)
-    // console.log(v)
-
-    // let v = new Vector(point.x, point.y).rotate(Math.PI  * 2 / 18).scale(10)
-    // draw(ctx, v, point)
-    // // point = v
-    // v = new Vector(point.x, point.y).rotate(Math.PI  * 2 / 17).scale(10)
-    // draw(ctx, v, point)
-    // // point = v
-    // v = new Vector(point.x, point.y).rotate(Math.PI  * 2 / 16).scale(10)
-    // draw(ctx, v, point)
-    // // point = v
-    // v = new Vector(point.x, point.y).rotate(Math.PI  * 2 / 15).scale(10)
-    // draw(ctx, v, point)
-    // point = v
-
-    // v = new Vector(point.x, point.y).scale(100).angle(Math.PI * 2 * 30 / 360)
-    // point = v
-    // draw(ctx, v)
 </script>
 </body>
 <style>
