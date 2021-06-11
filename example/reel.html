@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="reel">
+    <i>2020-01-01</i>
+    <i>2020-01-02</i>
+    <i>2020-01-03</i>
+    <i>2020-01-04</i>
+    <i>2020-01-05</i>
+</div>
+<style>
+    .reel {
+        width: 100px;
+        overflow: hidden;
+        perspective: 500px;
+        transform-style: preserve-3d;
+        margin: auto;
+        position: relative;
+    }
+    /*.reel:after {*/
+    /*    content: '';*/
+    /*    position: absolute;*/
+    /*    bottom: 23px;*/
+    /*    width: 100px;*/
+    /*    height: 60px;*/
+    /*    background: linear-gradient(to top, #06060638, rgba(0,0,0,0));*/
+    /*}*/
+    /*.reel:before {*/
+    /*    content: '';*/
+    /*    position: absolute;*/
+    /*    top: 23px;*/
+    /*    width: 100px;*/
+    /*    height: 60px;*/
+    /*    background: linear-gradient(to bottom, #06060638, rgba(0,0,0,0));*/
+    /*}*/
+    .reel i {
+        display: block;
+        width: 100px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        font-style: normal;
+        background-color: #a3a3a32e;
+        font-size: 12px;
+        transform: rotateX(
+                68deg
+        ) translateY(28px);
+        transform-origin: 50% 50%;
+        margin: auto;
+        opacity: 0.3;
+    }
+    .reel i:nth-child(2) {
+        transform: rotateX(40deg) translateZ(2px);
+        opacity: 0.5;
+    }
+    .reel i:nth-child(3) {
+        transform: rotateX(0deg);
+        opacity: 1;
+    }
+    .reel i:nth-child(4) {
+        transform: rotateX(-40deg) translateZ(2px);
+        opacity: 0.5;
+    }
+    .reel i:nth-child(5) {
+        transform: rotateX(-76deg) translateY(-76px);
+        opacity: 0.3
+
+
+
+    ;
+    }
+</style>
+</body>
+</html>
